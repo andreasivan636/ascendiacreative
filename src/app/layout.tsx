@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
 
-const outfit = Outfit({
-  variable: "--font-outfit",
-  subsets: ["latin"],
-});
+const outfit = Outfit({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ASCENDIA CREATIVE",
-  description: "A world-class creative developer portfolio.",
+  title: "Acendia Creative | Digital Creative Studio",
+  description: "Jasa pembuatan website scrollytelling, branding, dan desain kreatif. Hubungi creativeascendia@gmail.com.",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
@@ -18,12 +18,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${outfit.variable} antialiased`}
-      >
-        {children}
-      </body>
+    <html lang="id" className="scroll-smooth">
+      <body className={outfit.className}>{children}</body>
     </html>
   );
 }

@@ -2,7 +2,8 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
-import { ArrowRight, Star, Globe, PenTool, Layout, Instagram } from "lucide-react"; // Menambah icon yang relevan
+// Import semua icon di sini (HANYA SEKALI)
+import { ArrowRight, Star, Globe, PenTool, Layout, Instagram, Mail, Phone } from "lucide-react";
 import TextReveal from "./TextReveal";
 
 /* --- ABOUT SECTION --- */
@@ -114,7 +115,7 @@ function StatItem({ end, suffix, label }: { end: number, suffix: string, label: 
     )
 }
 
-/* --- TESTIMONIALS (Updated) --- */
+/* --- TESTIMONIALS --- */
 export function Testimonials() {
     const testimonials = [
         "Website Acendia bikin omzet naik drastis!",
@@ -153,18 +154,28 @@ export function Testimonials() {
     );
 }
 
-/* --- CTA & FOOTER (Updated) --- */
+/* --- CTA & FOOTER (UPDATED) --- */
 export function CTA() {
+    const nomerWA = "6285236415053";
+    const pesan = "Halo Acendia, saya tertarik untuk konsultasi project digital.";
+
     return (
         <section className="min-h-[60vh] bg-zinc-900 text-white flex flex-col items-center justify-center relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent z-10" />
             <div className="relative z-20 text-center px-6">
                 <h2 className="text-5xl md:text-8xl font-bold tracking-tighter mb-8 mix-blend-overlay">GO DIGITAL</h2>
-                <button className="group relative px-10 py-5 bg-cyan-500 text-black rounded-full overflow-hidden hover:scale-105 transition-transform duration-300">
-                    <span className="relative z-10 font-bold uppercase tracking-widest flex items-center gap-2">
-                        Hubungi Kami <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </span>
-                </button>
+
+                <a
+                    href={`https://wa.me/${nomerWA}?text=${encodeURIComponent(pesan)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <button className="group relative px-10 py-5 bg-cyan-500 text-black rounded-full overflow-hidden hover:scale-105 transition-transform duration-300 cursor-pointer">
+                        <span className="relative z-10 font-bold uppercase tracking-widest flex items-center gap-2">
+                            Hubungi Kami <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </span>
+                    </button>
+                </a>
             </div>
         </section>
     );
@@ -176,12 +187,30 @@ export function Footer() {
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-10">
                 <div>
                     <h3 className="text-2xl font-bold uppercase tracking-tighter mb-4 text-cyan-400">Acendia Creative</h3>
-                    <p className="text-zinc-500 max-w-xs">Solusi digital kreatif untuk masa depan bisnis Anda.</p>
+                    <p className="text-zinc-500 max-w-xs mb-4">Solusi digital kreatif untuk masa depan bisnis Anda.</p>
+                    <a href="mailto:creativeascendia@gmail.com" className="flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors">
+                        <Mail className="w-4 h-4" /> creativeascendia@gmail.com
+                    </a>
                 </div>
-                <div className="flex gap-10 text-sm uppercase tracking-widest text-zinc-400">
-                    <span className="hover:text-cyan-400 transition-colors cursor-pointer">Instagram</span>
-                    <span className="hover:text-cyan-400 transition-colors cursor-pointer">LinkedIn</span>
-                    <span className="hover:text-cyan-400 transition-colors cursor-pointer">WhatsApp</span>
+
+                <div className="flex gap-8 text-sm uppercase tracking-widest text-zinc-400">
+                    <a
+                        href="https://www.instagram.com/ascendia.creative/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 hover:text-cyan-400 transition-colors"
+                    >
+                        <Instagram className="w-4 h-4" /> Instagram
+                    </a>
+
+                    <a
+                        href="https://wa.me/6285236415053"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 hover:text-cyan-400 transition-colors"
+                    >
+                        <Phone className="w-4 h-4" /> WhatsApp
+                    </a>
                 </div>
             </div>
             <div className="max-w-7xl mx-auto mt-20 pt-10 border-t border-zinc-900 text-center text-xs text-zinc-600 uppercase tracking-widest">
