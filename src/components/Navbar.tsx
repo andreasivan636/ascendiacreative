@@ -2,104 +2,113 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Instagram, Phone, Mail } from "lucide-react";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
 
-    const toggleMenu = () => setIsOpen((prev) => !prev);
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const menuVariants: any = {
-        closed: {
-            y: "-100%",
-            transition: { duration: 0.8, ease: "easeInOut" },
-        },
-        open: {
-            y: "0%",
-            transition: { duration: 0.8, ease: "easeInOut" },
-        },
+    // Fungsi untuk scroll ke section
+    const scrollToSection = (id: string) => {
+        setIsOpen(false); // Tutup menu dulu
+        const element = document.getElementById(id);
+        if (element) {
+            // Tunggu sebentar biar animasi tutup menu selesai, baru scroll
+            setTimeout(() => {
+                element.scrollIntoView({ behavior: "smooth" });
+            }, 300);
+        } else if (id === "home") {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const linkVariants: any = {
-        closed: { y: "100%", opacity: 0 },
-        open: (i: number) => ({
-            y: "0%",
-            opacity: 1,
-            transition: { duration: 0.6, delay: 0.4 + i * 0.1, ease: "easeInOut" }
-        })
-    };
-
-    const navLinks = [
-        { name: "Home", href: "/" },
-        { name: "About", href: "#about" },
-        { name: "Work", href: "#work" },
-        { name: "Contact", href: "#contact" },
+    const menuItems = [
+        { label: "HOME", id: "home" },
+        { label: "ABOUT", id: "about" },
+        { label: "WORK", id: "work" },
+        { label: "CONTACT", id: "contact" },
     ];
 
     return (
         <>
-            <nav className="fixed top-0 left-0 right-0 z-100 flex items-center justify-between px-6 py-6 mix-blend-difference text-white">
-                <Link href="/" className="text-xl font-bold tracking-tighter uppercase relative z-101">
+            {/* Tombol Navbar Tetap (Sticky) */}
+            <nav className="fixed top-0 left-0 w-full p-6 flex justify-between items-center z-50 mix-blend-difference text-white">
+                <h1 className="text-xl font-bold tracking-widest uppercase cursor-pointer" onClick={() => scrollToSection("home")}>
                     ASCENDIA
-                </Link>
-
+                </h1>
                 <button
-                    onClick={toggleMenu}
-                    className="relative z-101 flex items-center gap-2 uppercase text-sm tracking-widest hover:opacity-70 transition-opacity"
+                    onClick={() => setIsOpen(true)}
+                    className="flex items-center gap-2 text-sm font-bold tracking-widest hover:opacity-70 transition-opacity"
                 >
-                    {isOpen ? "Close" : "Menu"}
-                    <div className="relative w-6 h-6 flex items-center justify-center">
-                        <AnimatePresence mode="wait">
-                            {isOpen ? (
-                                <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }}>
-                                    <X size={24} />
-                                </motion.div>
-                            ) : (
-                                <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }}>
-                                    <Menu size={24} />
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
+                    MENU <Menu className="w-6 h-6" />
                 </button>
             </nav>
 
-            <motion.div
-                variants={menuVariants}
-                initial="closed"
-                animate={isOpen ? "open" : "closed"}
-                className="fixed inset-0 bg-black z-90 flex flex-col justify-center items-center text-white"
-            >
-                <div className="flex flex-col gap-4 text-center">
-                    {navLinks.map((link, i) => (
-                        <div key={i} className="overflow-hidden">
-                            <motion.div
-                                custom={i}
-                                variants={linkVariants}
-                                initial="closed"
-                                animate={isOpen ? "open" : "closed"}
+            {/* Overlay Menu Fullscreen */}
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        initial={{ y: "-100%" }}
+                        animate={{ y: 0 }}
+                        exit={{ y: "-100%" }}
+                        transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
+                        className="fixed inset-0 bg-black z-[60] flex flex-col justify-between p-6 text-white"
+                    >
+                        {/* Header Menu */}
+                        <div className="flex justify-between items-center">
+                            <h1 className="text-xl font-bold tracking-widest uppercase text-zinc-500">Navigation</h1>
+                            <button
+                                onClick={() => setIsOpen(false)}
+                                className="flex items-center gap-2 text-sm font-bold tracking-widest hover:opacity-70 transition-opacity"
                             >
-                                <Link
-                                    href={link.href}
-                                    onClick={() => setIsOpen(false)}
-                                    className="text-6xl md:text-8xl font-bold uppercase tracking-tight hover:text-gray-400 transition-colors block"
-                                >
-                                    {link.name}
-                                </Link>
-                            </motion.div>
+                                CLOSE <X className="w-6 h-6" />
+                            </button>
                         </div>
-                    ))}
-                </div>
 
-                <div className="absolute bottom-10 left-0 right-0 flex justify-center gap-8 uppercase text-sm tracking-widest text-gray-400">
-                    <span className="hover:text-white transition-colors cursor-pointer">Instagram</span>
-                    <span className="hover:text-white transition-colors cursor-pointer">Twitter</span>
-                    <span className="hover:text-white transition-colors cursor-pointer">LinkedIn</span>
-                </div>
-            </motion.div>
+                        {/* List Menu Utama */}
+                        <div className="flex flex-col items-center justify-center gap-4">
+                            {menuItems.map((item, index) => (
+                                <motion.div
+                                    key={item.id}
+                                    initial={{ opacity: 0, y: 50 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.2 + index * 0.1 }}
+                                >
+                                    <button
+                                        onClick={() => scrollToSection(item.id)}
+                                        className="text-5xl md:text-8xl font-bold tracking-tighter hover:text-cyan-400 transition-colors uppercase"
+                                    >
+                                        {item.label}
+                                    </button>
+                                </motion.div>
+                            ))}
+                        </div>
+
+                        {/* Footer Menu Sosmed */}
+                        <div className="flex justify-center gap-8 text-sm uppercase tracking-widest text-zinc-500">
+                            <a
+                                href="https://www.instagram.com/ascendia.creative/"
+                                target="_blank"
+                                className="hover:text-white transition-colors flex items-center gap-2"
+                            >
+                                <Instagram className="w-4 h-4" /> Instagram
+                            </a>
+                            <a
+                                href="https://wa.me/6285236415053"
+                                target="_blank"
+                                className="hover:text-white transition-colors flex items-center gap-2"
+                            >
+                                <Phone className="w-4 h-4" /> WhatsApp
+                            </a>
+                            <a
+                                href="mailto:creativeascendia@gmail.com"
+                                className="hover:text-white transition-colors flex items-center gap-2"
+                            >
+                                <Mail className="w-4 h-4" /> Email
+                            </a>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </>
     );
 }
